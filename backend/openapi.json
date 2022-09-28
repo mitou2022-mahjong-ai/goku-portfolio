@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/game_stats/overall": {
+      "get": {
+        "summary": "Get Overall Gamestats",
+        "operationId": "get_overall_gamestats_game_stats_overall_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

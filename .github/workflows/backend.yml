@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  lint:
     defaults:
       run:
         working-directory: ./backend
@@ -31,4 +31,27 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: apply linting
+  openapi:
+    defaults:
+      run:
+        working-directory: ./backend
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.8"
+    - name: Install dependencies
+      run: |
+        pip install pipenv
+        pipenv install
+    - name: update openapi.json
+      run: pipenv run python openapi.py > openapi.json
+    - name: update openapi.json
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: update openapi.json
+
 
