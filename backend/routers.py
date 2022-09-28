@@ -20,7 +20,6 @@ def get_overall_gamestats(settings: Settings = Depends(get_settings)) -> List[St
     ref = db.reference("restricted_access/secret_document")
     obj: dict = ref.child(settings.table_name).get()
     overall_game_stats: List[Stats] = []
-    print(obj)
     for _, game_stats in obj.items():
         if game_stats["ai_type"] != "test":
             overall_game_stats.append(
