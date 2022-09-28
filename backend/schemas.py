@@ -11,4 +11,3 @@ class Stats(BaseModel):
     player_id: int
     points: List[int]
     ai_type: str
-    url: str
