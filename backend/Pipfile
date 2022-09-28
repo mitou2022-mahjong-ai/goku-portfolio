@@ -6,7 +6,8 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = "*"
-pydantic = "*"
+pydantic = {extras = ["dotenv"], version = "*"}
+firebase-admin = "*"
 
 [dev-packages]
 flake8 = "*"
