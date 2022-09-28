@@ -1,0 +1,32 @@
+name: backend-lint
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.8"
+    - name: Install dependencies
+      run: |
+        pip install pipenv
+        pipenv install --dev
+    - name: Lint
+      run: |
+        pipenv run isort .
+        pipenv run black .
+        pipenv run flake8
+        pipenv run mypy .
+    - name: apply linting
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: apply linting
+
