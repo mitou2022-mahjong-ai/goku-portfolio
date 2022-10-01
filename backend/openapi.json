@@ -14,9 +14,61 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "title": "Response Get Overall Gamestats Game Stats Overall Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Stats"
+                  }
+                }
               }
             }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Stats": {
+        "title": "Stats",
+        "required": [
+          "datetime",
+          "url",
+          "rank",
+          "player_id",
+          "points",
+          "ai_type"
+        ],
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "title": "Datetime",
+            "type": "string",
+            "format": "date-time"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "integer"
+          },
+          "player_id": {
+            "title": "Player Id",
+            "type": "integer"
+          },
+          "points": {
+            "title": "Points",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "ai_type": {
+            "title": "Ai Type",
+            "type": "string"
           }
         }
       }
