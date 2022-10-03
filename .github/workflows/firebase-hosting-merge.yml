@@ -8,14 +8,12 @@ name: Deploy to Firebase Hosting on merge
       - main
 jobs:
   build_and_deploy:
-    defaults:
-      run:
-        working-directory: ./frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: npm setup
         run: |
+          cd frontend
           npm install -D
           npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -24,4 +22,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MAHJONG_AI_2F059 }}'
           channelId: live
           projectId: mahjong-ai-2f059
-          path: "./frontend"
+          entryPoint: "./frontend"

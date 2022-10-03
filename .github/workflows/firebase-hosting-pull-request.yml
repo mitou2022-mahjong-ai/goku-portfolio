@@ -6,14 +6,12 @@ name: Deploy to Firebase Hosting on PR
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
-    defaults:
-      run:
-        working-directory: ./frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: npm setup
         run: |
+          cd frontend
           npm install -D
           npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -21,4 +19,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MAHJONG_AI_2F059 }}'
           projectId: mahjong-ai-2f059
-          path: "./frontend"
+          entryPoint: "./frontend"
