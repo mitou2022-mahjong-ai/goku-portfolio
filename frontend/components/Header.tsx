@@ -1,14 +1,22 @@
 import { Heading, Box, Divider } from "@chakra-ui/react";
+import { Text, HStack, Center, Flex } from "@chakra-ui/react";
 
-const Header = ({ text }: { text: string }) => {
+const Header = () => {
   return (
-    <Box bg="gray.400">
-      <Box p="4" pl="10">
-        <Heading fontSize="2xl" fontWeight="900">
-          {text}
-        </Heading>
+    <Box bg="white.100">
+      <Box p="4" pl="20" h="100px">
+        <Flex align="center" h="100%" color="blackAlpha.800">
+          <Box
+            color="blackAlpha.700"
+            bg="whiteAlpha.100"
+            fontWeight="900"
+            fontSize="4xl"
+          >
+            麻雀AI　極
+          </Box>
+        </Flex>
       </Box>
-      <Divider borderColor="gray.400" />
+      <Divider borderColor="gray.100" />
     </Box>
   );
 };
