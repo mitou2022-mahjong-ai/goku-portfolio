@@ -31,7 +31,7 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: apply linting
-  openapi:
+  openapi-requirements:
     defaults:
       run:
         working-directory: ./backend
@@ -47,11 +47,13 @@ jobs:
       run: |
         pip install pipenv
         pipenv install
-    - name: update openapi.json
-      run: pipenv run python openapi.py > openapi.json
+    - run: pipenv run python openapi.py > openapi.json
     - name: update openapi.json
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: update openapi.json
-
-
+    - run: pipenv requirements > requirements.txt
+    - name: update requirements.txt
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: update requirements.txt
