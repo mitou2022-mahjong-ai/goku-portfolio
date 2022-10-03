@@ -7,11 +7,9 @@ import {
   Thead,
   Tbody,
   Box,
-  Text,
   Center,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
-import Header from "../components/Header";
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
 import { appClient } from "../hooks/appClient";
@@ -32,7 +30,7 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
         <Tbody>
           {stats.map((s) => {
             return (
-              <Tr>
+              <Tr key={s.datetime}>
                 <Td>{s.datetime}</Td>
                 <Td>{s.ai_type}</Td>
                 <Td>{s.rank}</Td>
@@ -59,12 +57,7 @@ const Page: NextPage = () => {
 
   return (
     <Layout>
-      <Header />
-      <Box w="90%" p="20">
-        <Box>
-          <Heading color="blackAlpha.800">天鳳の対戦成績結果</Heading>
-        </Box>
-      </Box>
+      <Heading color="blackAlpha.800">天鳳の対戦成績結果</Heading>
       <Center>{stats ? <DataTable stats={stats} /> : <></>}</Center>
     </Layout>
   );
