@@ -23,7 +23,7 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, link: "/" },
-  { name: "Trending", icon: FiTrendingUp, link: "/tenhou_results" },
+  { name: "Tenhou Results", icon: FiTrendingUp, link: "/tenhou_results" },
 ];
 
 export const SimpleSidebar = () => {
@@ -97,7 +97,7 @@ const NavItem = ({ icon, children, onClick, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: "cyan.400",
+          bg: "teal.300",
           color: "white",
         }}
         {...rest}
