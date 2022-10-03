@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import List
 
-import firebase_admin
 from fastapi import APIRouter, Depends
 from firebase_admin import db
 
@@ -13,9 +12,6 @@ game_stats_router = APIRouter()
 
 @game_stats_router.get("/game_stats/overall", response_model=List[Stats])
 def get_overall_gamestats(settings: Settings = Depends(get_settings)) -> List[Stats]:
-    firebase_admin.initialize_app(
-        options={"databaseURL": settings.firebase_realtime_database_url}
-    )
 
     ref = db.reference("restricted_access/secret_document")
     obj: dict = ref.child(settings.table_name).get()
