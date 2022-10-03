@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import List
 
-import firebase_admin
 from fastapi import APIRouter, Depends
 from firebase_admin import db
 
@@ -9,6 +8,7 @@ from schemas import Stats
 from settings import Settings, get_settings
 
 game_stats_router = APIRouter()
+
 
 @game_stats_router.get("/game_stats/overall", response_model=List[Stats])
 def get_overall_gamestats(settings: Settings = Depends(get_settings)) -> List[Stats]:
