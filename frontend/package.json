@@ -11,7 +11,8 @@
     "openapi": "openapi --input ../backend/openapi.json --output gen --client axios --useUnionTypes --name AppClient",
     "firebase-login": "firebase login",
     "firebase-logout": "firebase logout",
-    "export": "next build && next export"
+    "export": "next build && next export",
+    "deploy": "firebase deploy"
   },
   "dependencies": {
     "@chakra-ui/icon": "^3.0.11",
