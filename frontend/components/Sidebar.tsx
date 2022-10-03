@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
-  IconButton,
   Box,
   CloseButton,
   Flex,
@@ -11,10 +11,18 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
+  LinkProps,
+  Stack,
+  Drawer,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerBody,
+  DrawerContent,
+  DrawerCloseButton,
+  Button,
 } from "@chakra-ui/react";
-import { FiHome, FiTrendingUp, FiMenu } from "react-icons/fi";
+import { FiHome, FiTrendingUp } from "react-icons/fi";
 import { IconType } from "react-icons";
-import { useRouter } from "next/router";
 
 interface LinkItemProps {
   name: string;
@@ -35,7 +43,9 @@ export const SimpleSidebar = () => {
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       />
-      <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
+      <Box display={{ base: "flex", md: "none" }}>
+        <DrawerMenu />
+      </Box>
     </Box>
   );
 };
@@ -45,8 +55,6 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-  const router = useRouter();
-
   return (
     <Box
       bg={useColorModeValue("white", "gray.900")}
@@ -63,13 +71,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem
-          key={link.name}
-          icon={link.icon}
-          onClick={() => {
-            router.push(link.link);
-          }}
-        >
+        <NavItem key={link.name} icon={link.icon} link={link.link}>
           {link.name}
         </NavItem>
       ))}
@@ -80,14 +82,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: ReactNode;
-  onClick: () => void;
+  link: string;
 }
-const NavItem = ({ icon, children, onClick, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
   return (
     <Link
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
-      onClick={onClick}
+      href={link}
     >
       <Flex
         align="center"
@@ -118,32 +120,52 @@ const NavItem = ({ icon, children, onClick, ...rest }: NavItemProps) => {
   );
 };
 
-interface MobileProps extends FlexProps {
-  onOpen: () => void;
-}
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  return (
-    <Flex
-      ml={{ base: 0, md: 60 }}
-      px={{ base: 4, md: 24 }}
-      height="20"
-      alignItems="center"
-      bg={useColorModeValue("white", "gray.900")}
-      borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent="flex-start"
-      {...rest}
-    >
-      <IconButton
-        variant="outline"
-        onClick={onOpen}
-        aria-label="open menu"
-        icon={<FiMenu />}
-      />
+const HoverLink = (props: LinkProps) => (
+  <Link rounded="base" _hover={{ bg: "gray.200" }} p={2} {...props} />
+);
 
-      <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Logo
-      </Text>
-    </Flex>
+const Navigation = () => {
+  return (
+    <Stack as="nav">
+      {LinkItems.map((linkItem, idx) => {
+        return (
+          <HoverLink key={idx} href={linkItem.link}>
+            {linkItem.name}
+          </HoverLink>
+        );
+      })}
+    </Stack>
+  );
+};
+
+const DrawerMenu = () => {
+  // useDisclosureで閉じ・開きの管理
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef<HTMLButtonElement>(null);
+
+  return (
+    <>
+      {/* ハンバーガーアイコン部分 */}
+      <Button ref={btnRef} onClick={onOpen}>
+        <HamburgerIcon />
+      </Button>
+      {/* Drawer部分 */}
+      <Drawer
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="left"
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerBody>
+              <Navigation />
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
+    </>
   );
 };
