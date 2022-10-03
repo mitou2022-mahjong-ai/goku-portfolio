@@ -9,9 +9,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <Header />
       <Flex w="100%">
         <SimpleSidebar />
-        <Box w="80%" p="20" pt="10">
-          {children}
-        </Box>
+        <Box p="10">{children}</Box>
       </Flex>
     </VStack>
   );

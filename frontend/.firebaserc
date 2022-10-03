@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "mahjong-ai-2f059"
+  },
+  "targets": {
+    "mahjong-ai-2f059": {
+      "hosting": {
+        "goku": [
+          "goku-mahjong-ai"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
