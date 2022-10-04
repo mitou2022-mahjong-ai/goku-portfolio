@@ -12,7 +12,7 @@ const Header = () => {
             fontWeight="900"
             fontSize="4xl"
           >
-            麻雀AI 極
+            麻雀AI 極 nara
           </Box>
         </Flex>
       </Box>
