@@ -1,5 +1,5 @@
 import { AppClient } from '../gen'
 
 export const appClient = new AppClient({
-  BASE: 'http://localhost:8000',
+  BASE: process.env["NEXT_PUBLIC_BACKEND_API"],
 })
