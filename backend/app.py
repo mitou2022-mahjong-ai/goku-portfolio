@@ -2,7 +2,7 @@ import firebase_admin
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import game_stats_router
+from routers import game_stats_router, health_router
 from settings import get_settings
 
 app = FastAPI()
@@ -16,6 +16,7 @@ app.add_middleware(
 )
 
 app.include_router(game_stats_router)
+app.include_router(health_router)
 
 
 @app.on_event("startup")
