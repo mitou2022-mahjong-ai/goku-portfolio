@@ -7,9 +7,11 @@ from settings import get_settings
 
 app = FastAPI()
 
+origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex="(https://.*\.d21sd1q32x07x\.amplifyapp\.com|http://localhost:3000)",
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
