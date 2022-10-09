@@ -8,6 +8,12 @@ from schemas import Stats
 from settings import Settings, get_settings
 
 game_stats_router = APIRouter()
+health_router = APIRouter()
+
+
+@health_router.get("/", response_model=str)
+def health_check() -> str:
+    return "ok"
 
 
 @game_stats_router.get("/game_stats/overall", response_model=List[Stats])

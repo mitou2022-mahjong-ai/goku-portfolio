@@ -7,3 +7,5 @@ COPY . .
 RUN pip install --upgrade pip && \
     pip install pipenv && \
     pipenv install --system
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--reload", "--port", "8000"]

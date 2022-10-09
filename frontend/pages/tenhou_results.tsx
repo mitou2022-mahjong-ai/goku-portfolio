@@ -22,7 +22,7 @@ import { Stats } from "../gen";
 
 const DataTable = ({ stats }: { stats: Stats[] }) => {
   return (
-    <Box w="90%">
+    <Box w="100%">
       <TableContainer
         border="1px"
         borderColor="blackAlpha.300"
@@ -45,7 +45,11 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
                   <Td>{s.datetime}</Td>
                   <Td>{s.ai_type}</Td>
                   <Td>{s.rank}</Td>
-                  <Td>{s.url}</Td>
+                  <Td>
+                    <Link href={s.url} isExternal>
+                      {s.url}
+                    </Link>
+                  </Td>
                 </Tr>
               );
             })}

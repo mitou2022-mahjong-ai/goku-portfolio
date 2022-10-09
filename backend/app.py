@@ -2,20 +2,23 @@ import firebase_admin
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import game_stats_router
+from routers import game_stats_router, health_router
 from settings import get_settings
 
 app = FastAPI()
 
+origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex="(https://.*\.d21sd1q32x07x\.amplifyapp\.com|http://localhost:3000)",
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 app.include_router(game_stats_router)
+app.include_router(health_router)
 
 
 @app.on_event("startup")
