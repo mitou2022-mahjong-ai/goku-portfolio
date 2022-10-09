@@ -22,4 +22,16 @@ export class DefaultService {
         });
     }
 
+    /**
+     * Health Check
+     * @returns string Successful Response
+     * @throws ApiError
+     */
+    public healthCheckGet(): CancelablePromise<string> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/',
+        });
+    }
+
 }
