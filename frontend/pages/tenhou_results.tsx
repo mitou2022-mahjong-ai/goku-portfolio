@@ -45,7 +45,11 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
                   <Td>{s.datetime}</Td>
                   <Td>{s.ai_type}</Td>
                   <Td>{s.rank}</Td>
-                  <Td>{s.url}</Td>
+                  <Td>
+                    <Link href={s.url} isExternal>
+                      {s.url}
+                    </Link>
+                  </Td>
                 </Tr>
               );
             })}
