@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: make envfile
+        run: |
+         echo NEXT_PUBLIC_BACKEND_API=${{ secrets.NEXT_PUBLIC_BACKEND_API_PRODUCTION}} > ./frontend/.env
       - name: npm setup
         run: |
           cd frontend
