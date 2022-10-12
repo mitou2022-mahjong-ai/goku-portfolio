@@ -47,9 +47,8 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
           {
             Header: "日時",
             accessor: "datetime",
-            Cell: ({row}: CellProps<Stats>) => (
-              new Date(row.original.datetime).toLocaleString()
-            )
+            Cell: ({ row }: CellProps<Stats>) =>
+              new Date(row.original.datetime).toLocaleString(),
           },
           {
             Header: "モデルの種類",
@@ -232,7 +231,7 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
             </Tooltip>
             <Tooltip label="Last Page">
               <IconButton
-              aria-label="last-page"
+                aria-label="last-page"
                 onClick={() => gotoPage(pageCount - 1)}
                 isDisabled={!canNextPage}
                 icon={<ArrowRightIcon h={3} w={3} />}
