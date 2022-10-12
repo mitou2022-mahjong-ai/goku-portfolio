@@ -1,10 +1,4 @@
-import {
-  Link,
-  Box,
-  Heading,
-  UnorderedList,
-  ListItem,
-} from "@chakra-ui/react";
+import { Link, Box, Heading, UnorderedList, ListItem } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Layout from "../components/Layout";
 
