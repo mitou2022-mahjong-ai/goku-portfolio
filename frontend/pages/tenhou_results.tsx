@@ -65,8 +65,8 @@ const Page: NextPage = () => {
 
   useEffect(() => {
     const f = async () => {
-      const d =
-        await appClient.default.getOverallGamestatsGameStatsOverallGet();
+      let d = await appClient.default.getOverallGamestatsGameStatsOverallGet();
+      d = d.reverse();
       setStats(d);
     };
     f();
