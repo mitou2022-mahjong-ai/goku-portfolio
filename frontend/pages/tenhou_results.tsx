@@ -55,7 +55,7 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
             accessor: "ai_type",
           },
           {
-            Header: "着順",
+            Header: "順位",
             accessor: "rank",
           },
           {
