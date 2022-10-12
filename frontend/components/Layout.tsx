@@ -5,7 +5,7 @@ import Header from "./Header";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <VStack w="100%">
+    <VStack w="100%"  overflowX="scroll" overflowY="scroll">
       <Header />
       <Flex w="100%">
         <SimpleSidebar />
