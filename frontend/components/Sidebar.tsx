@@ -21,7 +21,7 @@ import {
   DrawerCloseButton,
   Button,
 } from "@chakra-ui/react";
-import { FiHome, FiTrendingUp } from "react-icons/fi";
+import { FiHome, FiMail, FiTrendingUp } from "react-icons/fi";
 import { IconType } from "react-icons";
 
 interface LinkItemProps {
@@ -32,6 +32,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, link: "/" },
   { name: "Tenhou Results", icon: FiTrendingUp, link: "/tenhou_results" },
+  { name: "Contact", icon: FiMail, link: "/contact" },
 ];
 
 export const SimpleSidebar = () => {
