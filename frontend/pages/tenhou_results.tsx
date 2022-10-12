@@ -46,10 +46,18 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
                   <Td>{s.ai_type}</Td>
                   <Td>{s.rank}</Td>
                   <Td>
-                    <Link href={s.url} display={{ base: "block", md: "none" }} isExternal>
+                    <Link
+                      href={s.url}
+                      display={{ base: "block", md: "none" }}
+                      isExternal
+                    >
                       {s.url}
                     </Link>
-                    <Link href={s.url} display={{ base: "none", md: "block" }} isExternal>
+                    <Link
+                      href={s.url}
+                      display={{ base: "none", md: "block" }}
+                      isExternal
+                    >
                       url
                     </Link>
                   </Td>
