@@ -1,0 +1,10 @@
+{
+    "env": {
+      "GOOGLE_APPLICATION_CREDENTIALS": {
+        "value": ".firebase/firebase_key.json"
+      },
+      "FIREBASE_REALTIME_DATABASE_URL": {"value": "https://mahjong-ai-2f059-default-rtdb.firebaseio.com/"},
+      "TABLE_NAME": {"value": "test_gamestats_table"}
+    }
+  }
+  
