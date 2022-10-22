@@ -1,7 +1,9 @@
 import json
 import os
+from pathlib import Path
 
-os.makedirs(".firebase", exist_ok=True)
+curpath = Path(os.path.abspath(os.curdir))
+os.makedirs(curpath / ".firebase", exist_ok=True)
 json_dict = {
     key: os.getenv(key)
     for key in [
@@ -17,5 +19,5 @@ json_dict = {
         "client_x509_cert_url",
     ]
 }
-with open(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"), "w") as f:
+with open(curpath / os.getenv("GOOGLE_APPLICATION_CREDENTIALS"), "w") as f:
     json.dump(json_dict, f)
