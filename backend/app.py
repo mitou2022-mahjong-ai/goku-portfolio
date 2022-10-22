@@ -2,7 +2,7 @@ import firebase_admin
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from make_firebase_json import make_firebase_json
+from firebase_json import download_firebase_json_from_s3
 from routers import game_stats_router, health_router
 from settings import get_settings
 
@@ -25,7 +25,7 @@ app.include_router(health_router)
 @app.on_event("startup")
 def start_up():
     settings = get_settings()
-    make_firebase_json()
+    download_firebase_json_from_s3()
 
     firebase_admin.initialize_app(
         options={"databaseURL": settings.firebase_realtime_database_url}

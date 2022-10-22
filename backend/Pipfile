@@ -9,6 +9,7 @@ uvicorn = "*"
 pydantic = {extras = ["dotenv"], version = "*"}
 firebase-admin = "*"
 gunicorn = "*"
+boto3 = "*"
 
 [dev-packages]
 flake8 = "*"
