@@ -4,6 +4,16 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
+    type: str
+    project_id: str
+    private_key_id: str
+    private_key: str
+    client_email: str
+    client_id: str
+    auth_uri: str
+    token_uri: str
+    auth_provider_x509_cert_url: str
+    client_x509_cert_url: str
     google_application_credentials: str
     firebase_realtime_database_url: str
     table_name: str
