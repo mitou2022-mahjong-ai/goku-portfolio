@@ -14,7 +14,6 @@ class Settings(BaseSettings):
     token_uri: str
     auth_provider_x509_cert_url: str
     client_x509_cert_url: str
-    google_application_credentials: str
     firebase_realtime_database_url: str
     table_name: str
 
