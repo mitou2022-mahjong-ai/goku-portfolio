@@ -1,1 +1,2 @@
+relase: python make_firebase_json.py
 web: gunicorn -w 3 -k uvicorn.workers.UvicornWorker app:app
