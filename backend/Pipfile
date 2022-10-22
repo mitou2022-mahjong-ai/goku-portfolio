@@ -8,6 +8,7 @@ fastapi = "*"
 uvicorn = "*"
 pydantic = {extras = ["dotenv"], version = "*"}
 firebase-admin = "*"
+gunicorn = "*"
 
 [dev-packages]
 flake8 = "*"
