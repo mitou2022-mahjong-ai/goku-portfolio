@@ -19,3 +19,4 @@ json_dict = {
 }
 with open(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"), "w") as f:
     json.dump(json_dict, f)
+    print(f"done!: {os.getenv('GOOGLE_APPLICATION_CREDENTIALS')}")
