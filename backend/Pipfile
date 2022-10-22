@@ -8,6 +8,8 @@ fastapi = "*"
 uvicorn = "*"
 pydantic = {extras = ["dotenv"], version = "*"}
 firebase-admin = "*"
+gunicorn = "*"
+boto3 = "*"
 
 [dev-packages]
 flake8 = "*"
@@ -16,4 +18,4 @@ isort = "*"
 mypy = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"

@@ -10,3 +10,11 @@
 docker compose build # ビルド
 docker compose up -d # 立ち上げ
 ```
+
+## Deploy
+
+ルートディレクトリにて、以下のコマンドを実行
+
+```
+git subtree push --prefix backend/ heroku main
+```
