@@ -23,7 +23,10 @@ def get_overall_gamestats(settings: Settings = Depends(get_settings)) -> List[St
     obj: dict = ref.child(settings.table_name).get()
     overall_game_stats: List[Stats] = []
     for _, game_stats in obj.items():
-        if game_stats["ai_type"] != "test":
+        if (
+            "prototype" not in game_stats["ai_type"]
+            and "baseline" not in game_stats["ai_type"]
+        ):
             overall_game_stats.append(
                 Stats(
                     datetime=datetime.strptime(
