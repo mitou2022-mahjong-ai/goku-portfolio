@@ -270,7 +270,15 @@ const Page: NextPage = () => {
           <Link href="https://tenhou.net/man/" color="teal" isExternal>
             利用規約
           </Link>
-          に基づき、適切にAIによる対戦を行なっています。
+          に基づき、適切にAIによる対戦を行なっています。対戦結果は
+          <Link
+            href="https://twitter.com/gokugok32890477"
+            color="teal"
+            isExternal
+          >
+            こちらのTwitterアカウント
+          </Link>
+          でも公開しています。
         </Text>
       </Box>
       <Center pt="10">
