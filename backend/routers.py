@@ -26,6 +26,7 @@ def get_overall_gamestats(settings: Settings = Depends(get_settings)) -> List[St
         if (
             "prototype" not in game_stats["ai_type"]
             and "baseline" not in game_stats["ai_type"]
+            and "test" not in game_stats["ai_type"]
         ):
             overall_game_stats.append(
                 Stats(
