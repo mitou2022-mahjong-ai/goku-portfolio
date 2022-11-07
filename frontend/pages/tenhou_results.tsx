@@ -278,7 +278,7 @@ const Page: NextPage = () => {
           >
             こちらのTwitterアカウント
           </Link>
-          でも公開しています。
+          でも公開しています。今後さらにモデルをアップデートしていく予定です。
         </Text>
       </Box>
       <Center pt="10">
