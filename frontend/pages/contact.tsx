@@ -8,7 +8,7 @@ const Page: NextPage = () => {
       <Box>
         <Heading color="blackAlpha.800">連絡先</Heading>
         <UnorderedList pt="4">
-          <ListItem>
+          <ListItem fontSize="xl">
             {" "}
             共有のメールアドレス:{" "}
             <Link href="mailto:suzakumjai@gmail.com" color="blue.600">

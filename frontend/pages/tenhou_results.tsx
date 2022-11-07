@@ -261,7 +261,7 @@ const Page: NextPage = () => {
     <Layout>
       <Heading color="blackAlpha.800">天鳳の対戦成績結果</Heading>
       <Box pt="10">
-        <Text>
+        <Text fontSize="xl">
           オンライン麻雀
           <Link href="https://tenhou.net/" color="teal" isExternal>
             「天鳳」
