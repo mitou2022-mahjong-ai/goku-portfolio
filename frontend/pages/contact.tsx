@@ -19,7 +19,11 @@ const Page: NextPage = () => {
           <ListItem fontSize="xl" p="1">
             {" "}
             Twitter:{" "}
-            <Link href="https://twitter.com/mitoumjai" color="blue.600" isExternal>
+            <Link
+              href="https://twitter.com/mitoumjai"
+              color="blue.600"
+              isExternal
+            >
               {" "}
               mitoumjai
             </Link>
