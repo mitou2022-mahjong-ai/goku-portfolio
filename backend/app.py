@@ -6,9 +6,13 @@ from firebase_json import download_firebase_json_from_s3
 from routers import game_stats_router, health_router
 from settings import get_settings
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
-origins = ["*"]
+origins = [
+    "http://localhost:3000",
+    "https://goku-mahjong-ai-*.web.app",
+    "https://goku-mahjong-ai.web.app",
+]
 
 app.add_middleware(
     CORSMiddleware,

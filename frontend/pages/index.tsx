@@ -28,16 +28,16 @@ const Page: NextPage = () => {
           メンバー
         </Heading>
         <UnorderedList pt="4">
-          <ListItem p="1" color="blackAlpha.800">
+          <ListItem p="1" color="blackAlpha.800" fontSize="xl">
             大神卓也 (東京大学 工学部電子情報工学科)
           </ListItem>
-          <ListItem p="1" color="blackAlpha.800">
+          <ListItem p="1" color="blackAlpha.800" fontSize="xl">
             今宿祐希 (東京大学 工学部電子情報工学科)
           </ListItem>
-          <ListItem p="1" color="blackAlpha.800">
+          <ListItem p="1" color="blackAlpha.800" fontSize="xl">
             天野克敏 (東京大学 工学部電気電子工学科)
           </ListItem>
-          <ListItem p="1" color="blackAlpha.800">
+          <ListItem p="1" color="blackAlpha.800" fontSize="xl">
             奈良亮耶 (東京大学 工学部電子情報工学科)
           </ListItem>
         </UnorderedList>
