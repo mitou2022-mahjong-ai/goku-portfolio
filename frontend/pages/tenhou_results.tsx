@@ -21,6 +21,8 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  UnorderedList,
+  ListItem,
 } from "@chakra-ui/react";
 
 import {
@@ -294,6 +296,15 @@ const Page: NextPage = () => {
           />
         )}
       </Center>
+      <Box>
+        <Heading color="blackAlpha.800">モデルのアップデート</Heading>
+        <UnorderedList pt="4">
+          <ListItem p="1" color="blackAlpha.800" fontSize="xl">
+            gokurin:0.2
+          </ListItem>
+          <Text fontSize="xl">副露モデルを大幅アップデートしました</Text>
+        </UnorderedList>
+      </Box>
     </Layout>
   );
 };
