@@ -296,7 +296,7 @@ const Page: NextPage = () => {
           />
         )}
       </Center>
-      <Box>
+      <Box pt="4">
         <Heading color="blackAlpha.800">モデルのアップデート</Heading>
         <UnorderedList pt="4">
           <ListItem p="1" color="blackAlpha.800" fontSize="xl">
