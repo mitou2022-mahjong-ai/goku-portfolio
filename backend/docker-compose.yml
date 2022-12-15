@@ -6,10 +6,6 @@ services:
     tty: true
     ports:
       - "8000:8000"
-    volumes:
-      - type: bind
-        source: .
-        target: /app
-    env_file:
-      - .env.development
+    # env_file:
+    #   - .env
 
