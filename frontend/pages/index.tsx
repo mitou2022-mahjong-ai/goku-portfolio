@@ -13,7 +13,9 @@ const Page: NextPage = () => {
   return (
     <Layout>
       <Box>
-        <Heading color="blackAlpha.800">このプロジェクトについて</Heading>
+        <Heading color="blackAlpha.800" pt="10">
+          このプロジェクトについて
+        </Heading>
         <Text color="blackAlpha.800" pt="10" fontSize="xl">
           このプロジェクトは、未踏事業2022「麻雀プロのためのAI牌譜解析ツール」のポートフォリオサイトです。
         </Text>
@@ -60,6 +62,23 @@ const Page: NextPage = () => {
           このとてつもなく膨大な数の局面を正確に分析し、麻雀を極めて欲しいという願いから、
           「極（ごく）」という名前が付けられました。
         </Text>
+        <Heading color="blackAlpha.800" pt="10">
+          連絡先
+        </Heading>
+        <UnorderedList pt="4">
+          <ListItem fontSize="xl" p="1">
+            {" "}
+            Twitter:{" "}
+            <Link
+              href="https://twitter.com/mitoumjai"
+              color="blue.600"
+              isExternal
+            >
+              {" "}
+              @mitoumjai
+            </Link>
+          </ListItem>
+        </UnorderedList>
       </Box>
     </Layout>
   );
