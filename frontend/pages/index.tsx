@@ -70,7 +70,7 @@ const Page: NextPage = () => {
             {" "}
             Twitter:{" "}
             <Link
-              href="https://twitter.com/mitoumjai"
+              href="https://twitter.com/goku_log"
               color="blue.600"
               isExternal
             >
