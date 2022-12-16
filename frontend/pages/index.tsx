@@ -23,6 +23,7 @@ const Page: NextPage = () => {
           pb="3"
           href="https://www.ipa.go.jp/jinzai/mitou/2022/gaiyou_sd-1.html"
           color="blue.500"
+          isExternal
         >
           https://www.ipa.go.jp/jinzai/mitou/2022/gaiyou_sd-1.html
         </Link>
@@ -58,8 +59,16 @@ const Page: NextPage = () => {
           「極」という名前の由来
         </Heading>
         <Text color="blackAlpha.800" pt="10" fontSize="xl">
-          麻雀の情報集合の数は10^48程度、すなわち一極程度とも言われています。
-          このとてつもなく膨大な数の局面を正確に分析し、麻雀を極めて欲しいという願いから、
+          麻雀の情報集合の数は10の48乗程度、すなわち1極程度とも言われています(
+          <Link
+            pb="3"
+            href="https://openreview.net/forum?id=DTXZqTNV5nW"
+            color="blue.500"
+            isExternal
+          >
+            https://openreview.net/forum?id=DTXZqTNV5nW
+          </Link>
+          )。このとてつもなく膨大な数の局面を正確に分析し、麻雀を極めて欲しいという願いから、
           「極（ごく）」という名前が付けられました。
         </Text>
         <Heading color="blackAlpha.800" pt="10">
