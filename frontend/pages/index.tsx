@@ -68,7 +68,19 @@ const Page: NextPage = () => {
         <UnorderedList pt="4">
           <ListItem fontSize="xl" p="1">
             {" "}
-            Twitter:{" "}
+            公式Twitter:{" "}
+            <Link
+              href="https://twitter.com/mitoumjai"
+              color="blue.600"
+              isExternal
+            >
+              {" "}
+              @mitoumjai
+            </Link>
+          </ListItem>
+          <ListItem fontSize="xl" p="1">
+            {" "}
+            対戦結果通知用Twitter:{" "}
             <Link
               href="https://twitter.com/goku_log"
               color="blue.600"
