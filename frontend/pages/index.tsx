@@ -68,7 +68,7 @@ const Page: NextPage = () => {
           >
             https://openreview.net/forum?id=DTXZqTNV5nW
           </Link>
-          )。このとてつもなく膨大な数の局面を正確に分析し、麻雀を極めて欲しいという願いから、
+          )。このとてつもなく膨大な情報集合を正確に分析し、麻雀を極めて欲しいという願いから、
           「極（ごく）」という名前が付けられました。
         </Text>
         <Heading color="blackAlpha.800" pt="10">
@@ -96,7 +96,7 @@ const Page: NextPage = () => {
               isExternal
             >
               {" "}
-              @mitoumjai
+              @goku_log
             </Link>
           </ListItem>
         </UnorderedList>
