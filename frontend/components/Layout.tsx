@@ -11,11 +11,13 @@ const Layout = ({ children }: { children: ReactNode }) => {
         <title>麻雀AI 極</title>
         <link rel="icon" href="/goku-icon.png" />
       </Head>
-      <VStack w="100%" overflowX="scroll" overflowY="scroll">
+      <VStack w="100%" overflowY="scroll">
         <Header />
         <Flex w="100%">
           <SimpleSidebar />
-          <Box p="10">{children}</Box>
+          <Flex w={{ base: "80%" }} flexDirection="column" p="10">
+            {children}
+          </Flex>
         </Flex>
       </VStack>
     </>
