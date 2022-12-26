@@ -262,7 +262,7 @@ const Page: NextPage = () => {
   return (
     <Layout>
       <Heading color="blackAlpha.800">天鳳の対戦成績結果</Heading>
-      <Box pt="10">
+      <Box pt="10" w="90%">
         <Text fontSize="xl">
           オンライン麻雀
           <Link href="https://tenhou.net/" color="teal" isExternal>
@@ -282,7 +282,7 @@ const Page: NextPage = () => {
           今回特別に許可をいただき、今後は「ⓝGOKU」というアカウントで上級卓以上で打たせていこうと考えています。同卓いただく皆様、よろしくお願いいたします。
         </Text>
       </Box>
-      <Center pt="10">
+      <Center pt="10" w="90%" overflowX="auto">
         {stats ? (
           <DataTable stats={stats} />
         ) : (
