@@ -305,11 +305,15 @@ const Page: NextPage = () => {
           <ListItem p="1" color="blackAlpha.800" fontSize="xl">
             GOKU:v1
           </ListItem>
-          <Text fontSize="xl">アカウントをⓝGOKUに切り替えました。打牌モデルをアップデートしました</Text>
+          <Text fontSize="xl">
+            アカウントをⓝGOKUに切り替えました。打牌モデルをアップデートしました
+          </Text>
           <ListItem p="1" color="blackAlpha.800" fontSize="xl">
             GOKU:v2
           </ListItem>
-          <Text fontSize="xl">副露をしにくくなるようにしました。立直モデルをアップデートしました。</Text>
+          <Text fontSize="xl">
+            副露をしにくくなるようにしました。立直モデルをアップデートしました。
+          </Text>
         </UnorderedList>
       </Box>
     </Layout>
