@@ -23,6 +23,9 @@ import {
   NumberDecrementStepper,
   UnorderedList,
   ListItem,
+  Input,
+  HStack,
+  Checkbox,
 } from "@chakra-ui/react";
 
 import {
@@ -87,7 +90,7 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
         ],
       },
     ];
-  }, []);
+  }, [stats]);
 
   const data = useMemo(() => {
     return stats;
@@ -250,11 +253,44 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
 const Page: NextPage = () => {
   const [stats, setStats] = useState<Stats[]>();
 
+  const [start, setStart] = useState<Date>(new Date());
+  const [end, setEnd] = useState<Date>(new Date());
+
+  const [timeChecked, setTimeChecked] = useState(false);
+
+  const [aiChecked, setAiChecked] = useState<Map<string, boolean>>(new Map());
+  const [aiCheckCnt, setAICheckCnt] = useState(0);
+
+  const chosenStats = useMemo(() => {
+    const retval = stats
+      ?.filter((stat) => {
+        if (!timeChecked) return true;
+        return (
+          start <= new Date(stat.datetime) && new Date(stat.datetime) <= end
+        );
+      })
+      .filter((stat) => {
+        return aiChecked.get(stat.ai_type);
+      });
+    return retval || [];
+  }, [stats, start, end, timeChecked, aiCheckCnt]);
+
   useEffect(() => {
     const f = async () => {
       let d = await appClient.default.getOverallGamestatsGameStatsOverallGet();
       d = d.reverse();
+      setStart(new Date(d[d.length - 1].datetime));
+      setEnd(new Date(d[0].datetime));
       setStats(d);
+      const aiTypes: Set<string> = new Set();
+      d.forEach((dd) => {
+        aiTypes.add(dd.ai_type);
+      });
+
+      aiTypes.forEach((aiType) => {
+        aiChecked.set(aiType, true);
+      });
+      setAiChecked(aiChecked);
     };
     f();
   }, []);
@@ -282,9 +318,63 @@ const Page: NextPage = () => {
           今回特別に許可をいただき、今後は「ⓝGOKU」というアカウントで上級卓以上で打たせていこうと考えています。同卓いただく皆様、よろしくお願いいたします。
         </Text>
       </Box>
+      <Box m="3">
+        <Checkbox
+          m="1"
+          onChange={() => {
+            setTimeChecked(!timeChecked);
+          }}
+        >
+          時刻で絞る
+        </Checkbox>
+        <HStack m="1">
+          <Input
+            placeholder="Select Date and Time"
+            size="md"
+            type="datetime-local"
+            w="25"
+            disabled={!timeChecked}
+            onChange={(e) => {
+              setStart(new Date(e.target.value));
+            }}
+          />
+          <Text>~</Text>
+          <Input
+            placeholder="Select Date and Time"
+            size="md"
+            w="25"
+            type="datetime-local"
+            disabled={!timeChecked}
+            onChange={(e) => {
+              setEnd(new Date(e.target.value));
+            }}
+          />
+        </HStack>
+        <Text>AIの種類で絞る</Text>
+        <HStack mt="4">
+          {Array.from(aiChecked.entries())
+            .reverse()
+            .map(([aiType, _]) => {
+              return (
+                <Box m="1" key={aiType}>
+                  <Checkbox
+                    defaultChecked
+                    onChange={() => {
+                      aiChecked.set(aiType, !aiChecked.get(aiType));
+                      setAiChecked(aiChecked);
+                      setAICheckCnt(aiCheckCnt + 1);
+                    }}
+                  >
+                    {aiType}
+                  </Checkbox>
+                </Box>
+              );
+            })}
+        </HStack>
+      </Box>
       <Center pt="10" w="90%" overflowX="auto">
-        {stats ? (
-          <DataTable stats={stats} />
+        {chosenStats ? (
+          <DataTable stats={chosenStats} />
         ) : (
           <Spinner
             thickness="4px"
