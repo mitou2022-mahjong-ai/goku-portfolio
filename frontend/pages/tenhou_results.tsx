@@ -261,6 +261,12 @@ const Page: NextPage = () => {
   const [aiChecked, setAiChecked] = useState<Map<string, boolean>>(new Map());
   const [aiCheckCnt, setAICheckCnt] = useState(0);
 
+  const gameId = {
+    一般卓: 9,
+    上級卓: 137,
+    特上卓: 42,
+  };
+
   const chosenStats = useMemo(() => {
     const retval = stats
       ?.filter((stat) => {
@@ -274,6 +280,39 @@ const Page: NextPage = () => {
       });
     return retval;
   }, [stats, start, end, timeChecked, aiCheckCnt]);
+
+  const meldPercentage = useMemo(() => {
+    let meldCnt = 0;
+    let roundCnt = 0;
+    chosenStats?.forEach((s) => {
+      meldCnt += s.meld_cnt;
+      roundCnt += s.round_num;
+    });
+    if (roundCnt == 0) return 0;
+    return meldCnt / roundCnt;
+  }, [chosenStats]);
+
+  const riichiPercentage = useMemo(() => {
+    let riichiCnt = 0;
+    let roundCnt = 0;
+    chosenStats?.forEach((s) => {
+      riichiCnt += s.riichi_cnt;
+      roundCnt += s.round_num;
+    });
+    if (roundCnt == 0) return 0;
+    return riichiCnt / roundCnt;
+  }, [chosenStats]);
+
+  const houjuPercentage = useMemo(() => {
+    let houjuCnt = 0;
+    let roundCnt = 0;
+    chosenStats?.forEach((s) => {
+      houjuCnt += s.houju_cnt;
+      roundCnt += s.round_num;
+    });
+    if (roundCnt == 0) return 0;
+    return houjuCnt / roundCnt;
+  }, [chosenStats]);
 
   useEffect(() => {
     const f = async () => {
@@ -318,7 +357,33 @@ const Page: NextPage = () => {
           今回特別に許可をいただき、今後は「ⓝGOKU」というアカウントで上級卓以上で打たせていこうと考えています。同卓いただく皆様、よろしくお願いいたします。
         </Text>
       </Box>
-      <Box m="3">
+      <HStack mt="2">
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            副露率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(meldPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            立直率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(riichiPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            放銃率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(houjuPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+      </HStack>
+      <Box mt="3">
         <Checkbox
           m="1"
           onChange={() => {
@@ -350,7 +415,7 @@ const Page: NextPage = () => {
             }}
           />
         </HStack>
-        <Text>AIの種類で絞る</Text>
+        <Text mt="4">AIの種類で絞る</Text>
         <HStack mt="4">
           {Array.from(aiChecked.entries())
             .reverse()
