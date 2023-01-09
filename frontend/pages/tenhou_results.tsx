@@ -303,6 +303,17 @@ const Page: NextPage = () => {
     return riichiCnt / roundCnt;
   }, [chosenStats]);
 
+  const agariPercentage = useMemo(() => {
+    let roundCnt = 0;
+    let agariCnt = 0;
+    chosenStats?.forEach((s) => {
+      roundCnt += s.round_num;
+      agariCnt += s.agari_cnt;
+    });
+    if (roundCnt == 0) return 0;
+    return agariCnt / roundCnt;
+  }, [chosenStats]);
+
   const houjuPercentage = useMemo(() => {
     let houjuCnt = 0;
     let roundCnt = 0;
@@ -314,6 +325,17 @@ const Page: NextPage = () => {
     return houjuCnt / roundCnt;
   }, [chosenStats]);
 
+  const aveHoujuPercentage = useMemo(() => {
+    let houjuCnt = 0;
+    let sumHouju = 0;
+    chosenStats?.forEach((s) => {
+      houjuCnt += s.houju_cnt;
+      sumHouju += s.ave_houju * s.houju_cnt;
+    });
+    if (houjuCnt == 0) return 0;
+    return sumHouju / houjuCnt;
+  }, [chosenStats]);
+
   const aveAgariPoint = useMemo(() => {
     let agariCnt = 0;
     let sumAgari = 0;
@@ -321,6 +343,7 @@ const Page: NextPage = () => {
       agariCnt += s.agari_cnt;
       sumAgari += s.ave_agari * s.agari_cnt;
     });
+    if (agariCnt == 0) return 0;
     return sumAgari / agariCnt;
   }, [chosenStats]);
 
@@ -331,6 +354,7 @@ const Page: NextPage = () => {
       ryuukyokuCnt += s.ryuukyoku_cnt;
       ryuukyokuTenpaiCnt += s.ryuukyoku_cnt * s.ryuukyoku_tenpai_percentage;
     });
+    if (ryuukyokuCnt == 0) return 0;
     return ryuukyokuTenpaiCnt / ryuukyokuCnt;
   }, [chosenStats]);
 
@@ -396,10 +420,26 @@ const Page: NextPage = () => {
         </Box>
         <Box>
           <Text fontSize="lg" m="1" fontWeight="bold">
+            得点率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(houjuPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
             放銃率
           </Text>
           <Text fontSize="lg" m="1">
             {Math.round(houjuPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            平均放銃得点
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(aveHoujuPercentage)}
           </Text>
         </Box>
         <Box>
