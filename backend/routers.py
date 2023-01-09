@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import Dict, List
 
 from fastapi import APIRouter, Depends
 from firebase_admin import db
@@ -20,7 +20,7 @@ def health_check() -> str:
 def get_overall_gamestats(settings: Settings = Depends(get_settings)) -> List[Stats]:
 
     ref = db.reference("restricted_access/secret_document")
-    obj: dict = ref.child(settings.table_name).get()
+    obj: Dict[str, dict] = ref.child(settings.table_name).get()
     overall_game_stats: List[Stats] = []
     for _, game_stats in obj.items():
         if (
@@ -38,6 +38,18 @@ def get_overall_gamestats(settings: Settings = Depends(get_settings)) -> List[St
                     player_id=game_stats["player_id"],
                     points=game_stats["points"],
                     ai_type=game_stats["ai_type"],
+                    round_num=game_stats.get("round_num", 0),
+                    riichi_cnt=game_stats.get("riichi_cnt", 0),
+                    meld_cnt=game_stats.get("riichi_cnt", 0),
+                    tsumo_cnt=game_stats.get("tsumo_cnt", 0),
+                    agari_cnt=game_stats.get("agari_cnt", 0),
+                    houju_cnt=game_stats.get("houju_cnt", 0),
+                    ryuukyoku_cnt=game_stats.get("ryuukyoku_cnt", 0),
+                    ave_agari=game_stats.get("ave_agari", 0),
+                    ave_houju=game_stats.get("ave_houju", 0),
+                    ryuukyoku_tenpai_percentage=game_stats.get(
+                        "ryuukyoku_tenpai_percentage", 0
+                    ),
                 )
             )
 

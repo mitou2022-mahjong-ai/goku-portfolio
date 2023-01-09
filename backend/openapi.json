@@ -57,7 +57,17 @@
           "rank",
           "player_id",
           "points",
-          "ai_type"
+          "ai_type",
+          "round_num",
+          "riichi_cnt",
+          "meld_cnt",
+          "tsumo_cnt",
+          "agari_cnt",
+          "houju_cnt",
+          "ryuukyoku_cnt",
+          "ave_agari",
+          "ave_houju",
+          "ryuukyoku_tenpai_percentage"
         ],
         "type": "object",
         "properties": {
@@ -88,6 +98,46 @@
           "ai_type": {
             "title": "Ai Type",
             "type": "string"
+          },
+          "round_num": {
+            "title": "Round Num",
+            "type": "integer"
+          },
+          "riichi_cnt": {
+            "title": "Riichi Cnt",
+            "type": "integer"
+          },
+          "meld_cnt": {
+            "title": "Meld Cnt",
+            "type": "integer"
+          },
+          "tsumo_cnt": {
+            "title": "Tsumo Cnt",
+            "type": "integer"
+          },
+          "agari_cnt": {
+            "title": "Agari Cnt",
+            "type": "integer"
+          },
+          "houju_cnt": {
+            "title": "Houju Cnt",
+            "type": "integer"
+          },
+          "ryuukyoku_cnt": {
+            "title": "Ryuukyoku Cnt",
+            "type": "integer"
+          },
+          "ave_agari": {
+            "title": "Ave Agari",
+            "type": "number"
+          },
+          "ave_houju": {
+            "title": "Ave Houju",
+            "type": "number"
+          },
+          "ryuukyoku_tenpai_percentage": {
+            "title": "Ryuukyoku Tenpai Percentage",
+            "type": "number"
           }
         }
       }
