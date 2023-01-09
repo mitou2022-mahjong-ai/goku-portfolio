@@ -314,6 +314,26 @@ const Page: NextPage = () => {
     return houjuCnt / roundCnt;
   }, [chosenStats]);
 
+  const aveAgariPoint = useMemo(() => {
+    let agariCnt = 0;
+    let sumAgari = 0;
+    chosenStats?.forEach((s) => {
+      agariCnt += s.agari_cnt;
+      sumAgari += s.ave_agari * s.agari_cnt;
+    });
+    return sumAgari / agariCnt;
+  }, [chosenStats]);
+
+  const ryuukyokuTenpaiPercent = useMemo(() => {
+    let ryuukyokuCnt = 0;
+    let ryuukyokuTenpaiCnt = 0;
+    chosenStats?.forEach((s) => {
+      ryuukyokuCnt += s.ryuukyoku_cnt;
+      ryuukyokuTenpaiCnt += s.ryuukyoku_cnt * s.ryuukyoku_tenpai_percentage;
+    });
+    return ryuukyokuTenpaiCnt / ryuukyokuCnt;
+  }, [chosenStats]);
+
   useEffect(() => {
     const f = async () => {
       let d = await appClient.default.getOverallGamestatsGameStatsOverallGet();
@@ -380,6 +400,22 @@ const Page: NextPage = () => {
           </Text>
           <Text fontSize="lg" m="1">
             {Math.round(houjuPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            平均和了得点
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(aveAgariPoint)}
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            平均流局聴牌率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(ryuukyokuTenpaiPercent * 1000) / 10}%
           </Text>
         </Box>
       </HStack>
