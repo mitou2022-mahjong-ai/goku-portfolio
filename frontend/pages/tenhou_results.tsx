@@ -272,7 +272,7 @@ const Page: NextPage = () => {
       .filter((stat) => {
         return aiChecked.get(stat.ai_type);
       });
-    return retval || [];
+    return retval;
   }, [stats, start, end, timeChecked, aiCheckCnt]);
 
   useEffect(() => {
