@@ -420,10 +420,10 @@ const Page: NextPage = () => {
         </Box>
         <Box>
           <Text fontSize="lg" m="1" fontWeight="bold">
-            得点率
+            和了率
           </Text>
           <Text fontSize="lg" m="1">
-            {Math.round(houjuPercentage * 1000) / 10}%
+            {Math.round(agariPercentage * 1000) / 10}%
           </Text>
         </Box>
         <Box>
