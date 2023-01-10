@@ -23,6 +23,9 @@ import {
   NumberDecrementStepper,
   UnorderedList,
   ListItem,
+  Input,
+  HStack,
+  Checkbox,
 } from "@chakra-ui/react";
 
 import {
@@ -87,7 +90,7 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
         ],
       },
     ];
-  }, []);
+  }, [stats]);
 
   const data = useMemo(() => {
     return stats;
@@ -250,11 +253,127 @@ const DataTable = ({ stats }: { stats: Stats[] }) => {
 const Page: NextPage = () => {
   const [stats, setStats] = useState<Stats[]>();
 
+  const [start, setStart] = useState<Date>(new Date());
+  const [end, setEnd] = useState<Date>(new Date());
+
+  const [timeChecked, setTimeChecked] = useState(false);
+
+  const [aiChecked, setAiChecked] = useState<Map<string, boolean>>(new Map());
+  const [aiCheckCnt, setAICheckCnt] = useState(0);
+
+  const gameId = {
+    一般卓: 9,
+    上級卓: 137,
+    特上卓: 42,
+  };
+
+  const chosenStats = useMemo(() => {
+    const retval = stats
+      ?.filter((stat) => {
+        if (!timeChecked) return true;
+        return (
+          start <= new Date(stat.datetime) && new Date(stat.datetime) <= end
+        );
+      })
+      .filter((stat) => {
+        return aiChecked.get(stat.ai_type);
+      });
+    return retval;
+  }, [stats, start, end, timeChecked, aiCheckCnt]);
+
+  const meldPercentage = useMemo(() => {
+    let meldCnt = 0;
+    let roundCnt = 0;
+    chosenStats?.forEach((s) => {
+      meldCnt += s.meld_cnt;
+      roundCnt += s.round_num;
+    });
+    if (roundCnt == 0) return 0;
+    return meldCnt / roundCnt;
+  }, [chosenStats]);
+
+  const riichiPercentage = useMemo(() => {
+    let riichiCnt = 0;
+    let roundCnt = 0;
+    chosenStats?.forEach((s) => {
+      riichiCnt += s.riichi_cnt;
+      roundCnt += s.round_num;
+    });
+    if (roundCnt == 0) return 0;
+    return riichiCnt / roundCnt;
+  }, [chosenStats]);
+
+  const agariPercentage = useMemo(() => {
+    let roundCnt = 0;
+    let agariCnt = 0;
+    chosenStats?.forEach((s) => {
+      roundCnt += s.round_num;
+      agariCnt += s.agari_cnt;
+    });
+    if (roundCnt == 0) return 0;
+    return agariCnt / roundCnt;
+  }, [chosenStats]);
+
+  const houjuPercentage = useMemo(() => {
+    let houjuCnt = 0;
+    let roundCnt = 0;
+    chosenStats?.forEach((s) => {
+      houjuCnt += s.houju_cnt;
+      roundCnt += s.round_num;
+    });
+    if (roundCnt == 0) return 0;
+    return houjuCnt / roundCnt;
+  }, [chosenStats]);
+
+  const aveHoujuPercentage = useMemo(() => {
+    let houjuCnt = 0;
+    let sumHouju = 0;
+    chosenStats?.forEach((s) => {
+      houjuCnt += s.houju_cnt;
+      sumHouju += s.ave_houju * s.houju_cnt;
+    });
+    if (houjuCnt == 0) return 0;
+    return sumHouju / houjuCnt;
+  }, [chosenStats]);
+
+  const aveAgariPoint = useMemo(() => {
+    let agariCnt = 0;
+    let sumAgari = 0;
+    chosenStats?.forEach((s) => {
+      agariCnt += s.agari_cnt;
+      sumAgari += s.ave_agari * s.agari_cnt;
+    });
+    if (agariCnt == 0) return 0;
+    return sumAgari / agariCnt;
+  }, [chosenStats]);
+
+  const ryuukyokuTenpaiPercent = useMemo(() => {
+    let ryuukyokuCnt = 0;
+    let ryuukyokuTenpaiCnt = 0;
+    chosenStats?.forEach((s) => {
+      ryuukyokuCnt += s.ryuukyoku_cnt;
+      ryuukyokuTenpaiCnt += s.ryuukyoku_cnt * s.ryuukyoku_tenpai_percentage;
+    });
+    if (ryuukyokuCnt == 0) return 0;
+    return ryuukyokuTenpaiCnt / ryuukyokuCnt;
+  }, [chosenStats]);
+
   useEffect(() => {
     const f = async () => {
       let d = await appClient.default.getOverallGamestatsGameStatsOverallGet();
       d = d.reverse();
+      setStart(new Date(d[d.length - 1].datetime));
+      setEnd(new Date(d[0].datetime));
       setStats(d);
+      const aiTypes: Set<string> = new Set();
+      d.forEach((dd) => {
+        aiTypes.add(dd.ai_type);
+      });
+
+      aiTypes.forEach((aiType) => {
+        aiChecked.set(aiType, true);
+      });
+      setAiChecked(aiChecked);
     };
     f();
   }, []);
@@ -282,9 +401,121 @@ const Page: NextPage = () => {
           今回特別に許可をいただき、今後は「ⓝGOKU」というアカウントで上級卓以上で打たせていこうと考えています。同卓いただく皆様、よろしくお願いいたします。
         </Text>
       </Box>
+      <HStack mt="2">
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            副露率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(meldPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            立直率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(riichiPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            和了率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(agariPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            放銃率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(houjuPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            平均放銃得点
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(aveHoujuPercentage)}
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            平均和了得点
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(aveAgariPoint)}
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            平均流局聴牌率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(ryuukyokuTenpaiPercent * 1000) / 10}%
+          </Text>
+        </Box>
+      </HStack>
+      <Box mt="3">
+        <Checkbox
+          m="1"
+          onChange={() => {
+            setTimeChecked(!timeChecked);
+          }}
+        >
+          時刻で絞る
+        </Checkbox>
+        <HStack m="1">
+          <Input
+            placeholder="Select Date and Time"
+            size="md"
+            type="datetime-local"
+            w="25"
+            disabled={!timeChecked}
+            onChange={(e) => {
+              setStart(new Date(e.target.value));
+            }}
+          />
+          <Text>~</Text>
+          <Input
+            placeholder="Select Date and Time"
+            size="md"
+            w="25"
+            type="datetime-local"
+            disabled={!timeChecked}
+            onChange={(e) => {
+              setEnd(new Date(e.target.value));
+            }}
+          />
+        </HStack>
+        <Text mt="4">AIの種類で絞る</Text>
+        <HStack mt="4">
+          {Array.from(aiChecked.entries())
+            .reverse()
+            .map(([aiType, _]) => {
+              return (
+                <Box m="1" key={aiType}>
+                  <Checkbox
+                    defaultChecked
+                    onChange={() => {
+                      aiChecked.set(aiType, !aiChecked.get(aiType));
+                      setAiChecked(aiChecked);
+                      setAICheckCnt(aiCheckCnt + 1);
+                    }}
+                  >
+                    {aiType}
+                  </Checkbox>
+                </Box>
+              );
+            })}
+        </HStack>
+      </Box>
       <Center pt="10" w="90%" overflowX="auto">
-        {stats ? (
-          <DataTable stats={stats} />
+        {chosenStats ? (
+          <DataTable stats={chosenStats} />
         ) : (
           <Spinner
             thickness="4px"
