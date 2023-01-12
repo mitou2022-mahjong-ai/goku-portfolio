@@ -61,6 +61,7 @@
           "round_num",
           "riichi_cnt",
           "meld_cnt",
+          "double_meld_cnt",
           "tsumo_cnt",
           "agari_cnt",
           "houju_cnt",
@@ -109,6 +110,10 @@
           },
           "meld_cnt": {
             "title": "Meld Cnt",
+            "type": "integer"
+          },
+          "double_meld_cnt": {
+            "title": "Double Meld Cnt",
             "type": "integer"
           },
           "tsumo_cnt": {

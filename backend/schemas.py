@@ -14,6 +14,7 @@ class Stats(BaseModel):
     round_num: int
     riichi_cnt: int
     meld_cnt: int
+    double_meld_cnt: int
     tsumo_cnt: int
     agari_cnt: int
     houju_cnt: int
