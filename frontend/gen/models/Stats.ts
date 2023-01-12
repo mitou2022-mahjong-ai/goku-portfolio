@@ -12,6 +12,7 @@ export type Stats = {
     round_num: number;
     riichi_cnt: number;
     meld_cnt: number;
+    double_meld_cnt: number;
     tsumo_cnt: number;
     agari_cnt: number;
     houju_cnt: number;

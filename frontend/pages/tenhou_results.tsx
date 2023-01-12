@@ -292,6 +292,18 @@ const Page: NextPage = () => {
     return meldCnt / roundCnt;
   }, [chosenStats]);
 
+  const doubleMeldPercentage = useMemo(() => {
+    let doubleMeldCnt = 0;
+    let roundCnt = 0;
+    chosenStats?.forEach((s) => {
+      console.log(s);
+      doubleMeldCnt += s.double_meld_cnt;
+      roundCnt += s.round_num;
+    });
+    if (roundCnt == 0) return 0;
+    return doubleMeldCnt / roundCnt;
+  }, [chosenStats]);
+
   const riichiPercentage = useMemo(() => {
     let riichiCnt = 0;
     let roundCnt = 0;
@@ -408,6 +420,14 @@ const Page: NextPage = () => {
           </Text>
           <Text fontSize="lg" m="1">
             {Math.round(meldPercentage * 1000) / 10}%
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="lg" m="1" fontWeight="bold">
+            二副露率
+          </Text>
+          <Text fontSize="lg" m="1">
+            {Math.round(doubleMeldPercentage * 1000) / 10}%
           </Text>
         </Box>
         <Box>

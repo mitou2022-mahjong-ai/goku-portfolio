@@ -41,6 +41,7 @@ def get_overall_gamestats(settings: Settings = Depends(get_settings)) -> List[St
                     round_num=game_stats.get("round_num", 0),
                     riichi_cnt=game_stats.get("riichi_cnt", 0),
                     meld_cnt=game_stats.get("meld_cnt", 0),
+                    double_meld_cnt=game_stats.get("double_meld_cnt", 0),
                     tsumo_cnt=game_stats.get("tsumo_cnt", 0),
                     agari_cnt=game_stats.get("agari_cnt", 0),
                     houju_cnt=game_stats.get("houju_cnt", 0),
