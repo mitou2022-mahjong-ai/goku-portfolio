@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Layout from "../components/Layout";
+import { Flex, Image } from "@chakra-ui/react";
 
 const Page: NextPage = () => {
   return (
@@ -55,6 +56,12 @@ const Page: NextPage = () => {
           そこで私たちのプロジェクトでは、人間を超えるような最強のAIを目指すとともに、
           プロ雀士の方々にも認められ多くの場面で活躍されるようなAIを作りたいと考えています。
         </Text>
+        <Flex w="80%">
+          <Image src="/points.png" />
+        </Flex>
+        <Flex w="80%">
+          <Image src="/handpredict.png" />
+        </Flex>
         <Heading color="blackAlpha.800" pt="10">
           「極」という名前の由来
         </Heading>
