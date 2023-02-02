@@ -5,8 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import game_stats_router, health_router, rank_rate_router
 from settings import get_settings
 
-# app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 origins = [
     "http://localhost:3000",

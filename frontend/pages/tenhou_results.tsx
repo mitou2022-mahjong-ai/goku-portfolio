@@ -50,7 +50,7 @@ import { NextPage } from "next";
 import Layout from "../components/Layout";
 import { useState, useEffect, useMemo } from "react";
 import { appClient } from "../hooks/appClient";
-import { Stats } from "../gen";
+import { Stats, Status } from "../gen";
 
 ChartJS.register(ArcElement, _Tooltip, Legend);
 
@@ -272,10 +272,31 @@ const Page: NextPage = () => {
   const [aiChecked, setAiChecked] = useState<Map<string, boolean>>(new Map());
   const [aiCheckCnt, setAICheckCnt] = useState(0);
 
+  const [status, setStatus] = useState<Status>();
+
   const gameId = {
     一般卓: 9,
     上級卓: 137,
     特上卓: 42,
+  };
+
+  const playerRankStr = (playerRank: number) => {
+    if (playerRank == 20) {
+      return "天鳳位";
+    }
+    if (playerRank >= 11) {
+      return `${playerRank - 9}段`;
+    }
+    if (playerRank == 10) {
+      return "初段";
+    }
+    if (playerRank >= 1) {
+      return `${10 - playerRank}級`;
+    }
+    if (playerRank == 0) {
+      return "新人";
+    }
+    return "不明";
   };
 
   const chosenStats = useMemo(() => {
@@ -395,6 +416,9 @@ const Page: NextPage = () => {
   useEffect(() => {
     const f = async () => {
       let d = await appClient.default.getOverallGamestatsGameStatsOverallGet();
+      const s = await appClient.default.getStatusRankRateGet();
+
+      setStatus(s);
       d = d.reverse();
       setStart(new Date(d[d.length - 1].datetime));
       setEnd(new Date(d[0].datetime));
@@ -437,7 +461,44 @@ const Page: NextPage = () => {
           今回特別に許可をいただき、今後は「ⓝGOKU」というアカウントで上級卓以上で打たせていこうと考えています。同卓いただく皆様、よろしくお願いいたします。
         </Text>
       </Box>
-      <Box mt="3" border="1px" borderColor="gray" p="3" borderRadius="lg" background="blackAlpha.50">
+      {status ? (
+        <HStack pt="5" w="100%" wrap="wrap">
+          <Box>
+            <Text fontSize="lg" m="1" fontWeight="bold">
+              段位
+            </Text>
+            <Text fontSize="lg" m="1">
+              {playerRankStr(status?.dan)}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontSize="lg" m="1" fontWeight="bold">
+              段位ポイント
+            </Text>
+            <Text fontSize="lg" m="1">
+              {status?.dan_point}
+            </Text>
+          </Box>
+          <Box m="2">
+            <Text fontSize="lg" m="1" fontWeight="bold">
+              レート
+            </Text>
+            <Text fontSize="lg" m="1">
+              {status?.rate}
+            </Text>
+          </Box>
+        </HStack>
+      ) : (
+        <></>
+      )}
+      <Box
+        mt="3"
+        border="1px"
+        borderColor="gray"
+        p="3"
+        borderRadius="lg"
+        background="blackAlpha.50"
+      >
         <Checkbox
           m="1"
           onChange={() => {
@@ -512,7 +573,7 @@ const Page: NextPage = () => {
             <HStack w="100%">
               {chosenStats.length > 0 ? (
                 <>
-                  <Flex w="60%">
+                  <Flex w={{ base: "40%", md: "70%" }}>
                     <Pie
                       data={{
                         labels: ["1位", "2位", "3位", "4位"],
