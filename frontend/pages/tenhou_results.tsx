@@ -26,6 +26,7 @@ import {
   Input,
   HStack,
   Checkbox,
+  VStack,
 } from "@chakra-ui/react";
 
 import {
@@ -35,6 +36,14 @@ import {
   ChevronLeftIcon,
 } from "@chakra-ui/icons";
 
+import { Pie } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip as _Tooltip,
+  Legend,
+} from "chart.js";
+
 import { usePagination, useTable, CellProps } from "react-table";
 
 import { NextPage } from "next";
@@ -42,6 +51,8 @@ import Layout from "../components/Layout";
 import { useState, useEffect, useMemo } from "react";
 import { appClient } from "../hooks/appClient";
 import { Stats } from "../gen";
+
+ChartJS.register(ArcElement, _Tooltip, Legend);
 
 const DataTable = ({ stats }: { stats: Stats[] }) => {
   const columns = useMemo(() => {
@@ -281,6 +292,14 @@ const Page: NextPage = () => {
     return retval;
   }, [stats, start, end, timeChecked, aiCheckCnt]);
 
+  const rankCounter = useMemo(() => {
+    const retval = [0, 0, 0, 0];
+    chosenStats?.forEach((s) => {
+      retval[s.rank - 1]++;
+    });
+    return retval;
+  }, [stats, start, end, timeChecked, aiCheckCnt]);
+
   const meldPercentage = useMemo(() => {
     let meldCnt = 0;
     let roundCnt = 0;
@@ -296,7 +315,6 @@ const Page: NextPage = () => {
     let doubleMeldCnt = 0;
     let roundCnt = 0;
     chosenStats?.forEach((s) => {
-      console.log(s);
       doubleMeldCnt += s.double_meld_cnt;
       roundCnt += s.round_num;
     });
@@ -383,8 +401,10 @@ const Page: NextPage = () => {
       });
 
       aiTypes.forEach((aiType) => {
-        aiChecked.set(aiType, true);
+        aiChecked.set(aiType, false);
       });
+      const latestAIType = d[0].ai_type;
+      aiChecked.set(latestAIType, true);
       setAiChecked(aiChecked);
     };
     f();
@@ -515,27 +535,63 @@ const Page: NextPage = () => {
         <HStack mt="4">
           {Array.from(aiChecked.entries())
             .reverse()
-            .map(([aiType, _]) => {
-              return (
-                <Box m="1" key={aiType}>
-                  <Checkbox
-                    defaultChecked
-                    onChange={() => {
-                      aiChecked.set(aiType, !aiChecked.get(aiType));
-                      setAiChecked(aiChecked);
-                      setAICheckCnt(aiCheckCnt + 1);
-                    }}
-                  >
-                    {aiType}
-                  </Checkbox>
-                </Box>
-              );
+            .map(([aiType, flg]) => {
+              if (flg) {
+                return (
+                  <Box m="1" key={aiType}>
+                    <Checkbox
+                      defaultChecked
+                      onChange={() => {
+                        aiChecked.set(aiType, !aiChecked.get(aiType));
+                        setAiChecked(aiChecked);
+                        setAICheckCnt(aiCheckCnt + 1);
+                      }}
+                    >
+                      {aiType}
+                    </Checkbox>
+                  </Box>
+                );
+              } else
+                return (
+                  <Box m="1" key={aiType}>
+                    <Checkbox
+                      onChange={() => {
+                        aiChecked.set(aiType, !aiChecked.get(aiType));
+                        setAiChecked(aiChecked);
+                        setAICheckCnt(aiCheckCnt + 1);
+                      }}
+                    >
+                      {aiType}
+                    </Checkbox>
+                  </Box>
+                );
             })}
         </HStack>
       </Box>
       <Center pt="10" w="90%" overflowX="auto">
         {chosenStats ? (
-          <DataTable stats={chosenStats} />
+          <VStack>
+            <Box w="50%">
+              <Pie
+                data={{
+                  labels: ["1位", "2位", "3位", "4位"],
+                  datasets: [
+                    {
+                      backgroundColor: [
+                        "rgba(255, 99, 132, 0.2)",
+                        "rgba(54, 162, 235, 0.2)",
+                        "rgba(255, 206, 86, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                      ],
+                      data: rankCounter,
+                      borderWidth: 1,
+                    },
+                  ],
+                }}
+              />
+            </Box>
+            <DataTable stats={chosenStats} />
+          </VStack>
         ) : (
           <Spinner
             thickness="4px"
