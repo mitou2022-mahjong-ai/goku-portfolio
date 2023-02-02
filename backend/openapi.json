@@ -45,6 +45,24 @@
           }
         }
       }
+    },
+    "/rank_rate": {
+      "get": {
+        "summary": "Get Status",
+        "operationId": "get_status_rank_rate_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -143,6 +161,29 @@
           "ryuukyoku_tenpai_percentage": {
             "title": "Ryuukyoku Tenpai Percentage",
             "type": "number"
+          }
+        }
+      },
+      "Status": {
+        "title": "Status",
+        "required": [
+          "dan",
+          "dan_point",
+          "rate"
+        ],
+        "type": "object",
+        "properties": {
+          "dan": {
+            "title": "Dan",
+            "type": "integer"
+          },
+          "dan_point": {
+            "title": "Dan Point",
+            "type": "integer"
+          },
+          "rate": {
+            "title": "Rate",
+            "type": "integer"
           }
         }
       }

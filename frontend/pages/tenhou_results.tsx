@@ -26,6 +26,7 @@ import {
   Input,
   HStack,
   Checkbox,
+  VStack,
 } from "@chakra-ui/react";
 
 import {
@@ -35,13 +36,23 @@ import {
   ChevronLeftIcon,
 } from "@chakra-ui/icons";
 
+import { Pie } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip as _Tooltip,
+  Legend,
+} from "chart.js";
+
 import { usePagination, useTable, CellProps } from "react-table";
 
 import { NextPage } from "next";
 import Layout from "../components/Layout";
 import { useState, useEffect, useMemo } from "react";
 import { appClient } from "../hooks/appClient";
-import { Stats } from "../gen";
+import { Stats, Status } from "../gen";
+
+ChartJS.register(ArcElement, _Tooltip, Legend);
 
 const DataTable = ({ stats }: { stats: Stats[] }) => {
   const columns = useMemo(() => {
@@ -261,10 +272,31 @@ const Page: NextPage = () => {
   const [aiChecked, setAiChecked] = useState<Map<string, boolean>>(new Map());
   const [aiCheckCnt, setAICheckCnt] = useState(0);
 
+  const [status, setStatus] = useState<Status>();
+
   const gameId = {
     一般卓: 9,
     上級卓: 137,
     特上卓: 42,
+  };
+
+  const playerRankStr = (playerRank: number) => {
+    if (playerRank == 20) {
+      return "天鳳位";
+    }
+    if (playerRank >= 11) {
+      return `${playerRank - 9}段`;
+    }
+    if (playerRank == 10) {
+      return "初段";
+    }
+    if (playerRank >= 1) {
+      return `${10 - playerRank}級`;
+    }
+    if (playerRank == 0) {
+      return "新人";
+    }
+    return "不明";
   };
 
   const chosenStats = useMemo(() => {
@@ -278,6 +310,18 @@ const Page: NextPage = () => {
       .filter((stat) => {
         return aiChecked.get(stat.ai_type);
       });
+    return retval;
+  }, [stats, start, end, timeChecked, aiCheckCnt]);
+
+  const totalGameCount = useMemo(() => {
+    return chosenStats?.length || 0;
+  }, [stats, start, end, timeChecked, aiCheckCnt]);
+
+  const rankCounter = useMemo(() => {
+    const retval = [0, 0, 0, 0];
+    chosenStats?.forEach((s) => {
+      retval[s.rank - 1]++;
+    });
     return retval;
   }, [stats, start, end, timeChecked, aiCheckCnt]);
 
@@ -296,7 +340,6 @@ const Page: NextPage = () => {
     let doubleMeldCnt = 0;
     let roundCnt = 0;
     chosenStats?.forEach((s) => {
-      console.log(s);
       doubleMeldCnt += s.double_meld_cnt;
       roundCnt += s.round_num;
     });
@@ -373,6 +416,9 @@ const Page: NextPage = () => {
   useEffect(() => {
     const f = async () => {
       let d = await appClient.default.getOverallGamestatsGameStatsOverallGet();
+      const s = await appClient.default.getStatusRankRateGet();
+
+      setStatus(s);
       d = d.reverse();
       setStart(new Date(d[d.length - 1].datetime));
       setEnd(new Date(d[0].datetime));
@@ -383,8 +429,10 @@ const Page: NextPage = () => {
       });
 
       aiTypes.forEach((aiType) => {
-        aiChecked.set(aiType, true);
+        aiChecked.set(aiType, false);
       });
+      const latestAIType = d[0].ai_type;
+      aiChecked.set(latestAIType, true);
       setAiChecked(aiChecked);
     };
     f();
@@ -393,7 +441,7 @@ const Page: NextPage = () => {
   return (
     <Layout>
       <Heading color="blackAlpha.800">天鳳の対戦成績結果</Heading>
-      <Box pt="10" w="90%">
+      <Box pt="10" w="100%">
         <Text fontSize="xl">
           オンライン麻雀
           <Link href="https://tenhou.net/" color="teal" isExternal>
@@ -413,73 +461,44 @@ const Page: NextPage = () => {
           今回特別に許可をいただき、今後は「ⓝGOKU」というアカウントで上級卓以上で打たせていこうと考えています。同卓いただく皆様、よろしくお願いいたします。
         </Text>
       </Box>
-      <HStack mt="2">
-        <Box>
-          <Text fontSize="lg" m="1" fontWeight="bold">
-            副露率
-          </Text>
-          <Text fontSize="lg" m="1">
-            {Math.round(meldPercentage * 1000) / 10}%
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize="lg" m="1" fontWeight="bold">
-            二副露率
-          </Text>
-          <Text fontSize="lg" m="1">
-            {Math.round(doubleMeldPercentage * 1000) / 10}%
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize="lg" m="1" fontWeight="bold">
-            立直率
-          </Text>
-          <Text fontSize="lg" m="1">
-            {Math.round(riichiPercentage * 1000) / 10}%
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize="lg" m="1" fontWeight="bold">
-            和了率
-          </Text>
-          <Text fontSize="lg" m="1">
-            {Math.round(agariPercentage * 1000) / 10}%
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize="lg" m="1" fontWeight="bold">
-            放銃率
-          </Text>
-          <Text fontSize="lg" m="1">
-            {Math.round(houjuPercentage * 1000) / 10}%
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize="lg" m="1" fontWeight="bold">
-            平均放銃得点
-          </Text>
-          <Text fontSize="lg" m="1">
-            {Math.round(aveHoujuPercentage)}
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize="lg" m="1" fontWeight="bold">
-            平均和了得点
-          </Text>
-          <Text fontSize="lg" m="1">
-            {Math.round(aveAgariPoint)}
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize="lg" m="1" fontWeight="bold">
-            平均流局聴牌率
-          </Text>
-          <Text fontSize="lg" m="1">
-            {Math.round(ryuukyokuTenpaiPercent * 1000) / 10}%
-          </Text>
-        </Box>
-      </HStack>
-      <Box mt="3">
+      {status ? (
+        <HStack pt="5" w="100%" wrap="wrap">
+          <Box>
+            <Text fontSize="lg" m="1" fontWeight="bold">
+              段位
+            </Text>
+            <Text fontSize="lg" m="1">
+              {playerRankStr(status?.dan)}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontSize="lg" m="1" fontWeight="bold">
+              段位ポイント
+            </Text>
+            <Text fontSize="lg" m="1">
+              {status?.dan_point}
+            </Text>
+          </Box>
+          <Box m="2">
+            <Text fontSize="lg" m="1" fontWeight="bold">
+              レート
+            </Text>
+            <Text fontSize="lg" m="1">
+              {status?.rate}
+            </Text>
+          </Box>
+        </HStack>
+      ) : (
+        <></>
+      )}
+      <Box
+        mt="3"
+        border="1px"
+        borderColor="gray"
+        p="3"
+        borderRadius="lg"
+        background="blackAlpha.50"
+      >
         <Checkbox
           m="1"
           onChange={() => {
@@ -512,30 +531,156 @@ const Page: NextPage = () => {
           />
         </HStack>
         <Text mt="4">AIの種類で絞る</Text>
-        <HStack mt="4">
+        <HStack mt="4" wrap="wrap">
           {Array.from(aiChecked.entries())
             .reverse()
-            .map(([aiType, _]) => {
-              return (
-                <Box m="1" key={aiType}>
-                  <Checkbox
-                    defaultChecked
-                    onChange={() => {
-                      aiChecked.set(aiType, !aiChecked.get(aiType));
-                      setAiChecked(aiChecked);
-                      setAICheckCnt(aiCheckCnt + 1);
-                    }}
-                  >
-                    {aiType}
-                  </Checkbox>
-                </Box>
-              );
+            .map(([aiType, flg]) => {
+              if (flg) {
+                return (
+                  <Box m="1" key={aiType}>
+                    <Checkbox
+                      defaultChecked
+                      onChange={() => {
+                        aiChecked.set(aiType, !aiChecked.get(aiType));
+                        setAiChecked(aiChecked);
+                        setAICheckCnt(aiCheckCnt + 1);
+                      }}
+                    >
+                      {aiType}
+                    </Checkbox>
+                  </Box>
+                );
+              } else
+                return (
+                  <Box m="1" key={aiType}>
+                    <Checkbox
+                      onChange={() => {
+                        aiChecked.set(aiType, !aiChecked.get(aiType));
+                        setAiChecked(aiChecked);
+                        setAICheckCnt(aiCheckCnt + 1);
+                      }}
+                    >
+                      {aiType}
+                    </Checkbox>
+                  </Box>
+                );
             })}
         </HStack>
       </Box>
-      <Center pt="10" w="90%" overflowX="auto">
+      <Center pt="10" w="100%">
         {chosenStats ? (
-          <DataTable stats={chosenStats} />
+          <VStack w="100%">
+            <HStack w="100%">
+              {chosenStats.length > 0 ? (
+                <>
+                  <Flex w={{ base: "40%", md: "70%" }}>
+                    <Pie
+                      data={{
+                        labels: ["1位", "2位", "3位", "4位"],
+                        datasets: [
+                          {
+                            backgroundColor: [
+                              "rgba(255, 99, 132, 0.2)",
+                              "rgba(54, 162, 235, 0.2)",
+                              "rgba(255, 206, 86, 0.2)",
+                              "rgba(75, 192, 192, 0.2)",
+                            ],
+                            data: rankCounter,
+                            borderWidth: 1,
+                          },
+                        ],
+                      }}
+                      options={{
+                        plugins: {
+                          tooltip: {
+                            callbacks: {
+                              label: (ctx) => {
+                                return `${ctx.label}: ${
+                                  ctx.formattedValue
+                                }戦 (${Math.round(
+                                  (parseInt(ctx.formattedValue) * 100) /
+                                    totalGameCount
+                                )}%)`;
+                              },
+                            },
+                          },
+                        },
+                      }}
+                    />
+                  </Flex>
+                  <Flex m="2" wrap="wrap">
+                    <Box m="2">
+                      <Text fontSize="lg" m="1" fontWeight="bold">
+                        副露率
+                      </Text>
+                      <Text fontSize="lg" m="1">
+                        {Math.round(meldPercentage * 1000) / 10}%
+                      </Text>
+                    </Box>
+                    <Box m="2">
+                      <Text fontSize="lg" m="1" fontWeight="bold">
+                        二副露率
+                      </Text>
+                      <Text fontSize="lg" m="1">
+                        {Math.round(doubleMeldPercentage * 1000) / 10}%
+                      </Text>
+                    </Box>
+                    <Box m="2">
+                      <Text fontSize="lg" m="1" fontWeight="bold">
+                        立直率
+                      </Text>
+                      <Text fontSize="lg" m="1">
+                        {Math.round(riichiPercentage * 1000) / 10}%
+                      </Text>
+                    </Box>
+                    <Box m="2">
+                      <Text fontSize="lg" m="1" fontWeight="bold">
+                        和了率
+                      </Text>
+                      <Text fontSize="lg" m="1">
+                        {Math.round(agariPercentage * 1000) / 10}%
+                      </Text>
+                    </Box>
+                    <Box m="2">
+                      <Text fontSize="lg" m="1" fontWeight="bold">
+                        放銃率
+                      </Text>
+                      <Text fontSize="lg" m="1">
+                        {Math.round(houjuPercentage * 1000) / 10}%
+                      </Text>
+                    </Box>
+                    <Box m="2">
+                      <Text fontSize="lg" m="1" fontWeight="bold">
+                        平均放銃得点
+                      </Text>
+                      <Text fontSize="lg" m="1">
+                        {Math.round(aveHoujuPercentage)}
+                      </Text>
+                    </Box>
+                    <Box m="2">
+                      <Text fontSize="lg" m="1" fontWeight="bold">
+                        平均和了得点
+                      </Text>
+                      <Text fontSize="lg" m="1">
+                        {Math.round(aveAgariPoint)}
+                      </Text>
+                    </Box>
+                    <Box m="2">
+                      <Text fontSize="lg" m="1" fontWeight="bold">
+                        平均流局聴牌率
+                      </Text>
+                      <Text fontSize="lg" m="1">
+                        {Math.round(ryuukyokuTenpaiPercent * 1000) / 10}%
+                      </Text>
+                    </Box>
+                  </Flex>
+                </>
+              ) : (
+                <></>
+              )}
+            </HStack>
+            <DataTable stats={chosenStats} />
+          </VStack>
         ) : (
           <Spinner
             thickness="4px"

@@ -4,11 +4,12 @@ from typing import Dict, List
 from fastapi import APIRouter, Depends
 from firebase_admin import db
 
-from schemas import Stats
+from schemas import Stats, Status
 from settings import Settings, get_settings
 
 game_stats_router = APIRouter()
 health_router = APIRouter()
+rank_rate_router = APIRouter()
 
 
 @health_router.get("/", response_model=str)
@@ -55,3 +56,10 @@ def get_overall_gamestats(settings: Settings = Depends(get_settings)) -> List[St
             )
 
     return overall_game_stats
+
+
+@rank_rate_router.get("/rank_rate", response_model=Status)
+def get_status():
+    ref = db.reference("restricted_access/secret_document")
+    status_dict = ref.child("status").get()
+    return Status(**status_dict)

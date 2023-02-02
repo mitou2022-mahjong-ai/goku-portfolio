@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Stats } from '../models/Stats';
+import type { Status } from '../models/Status';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -31,6 +32,18 @@ export class DefaultService {
         return this.httpRequest.request({
             method: 'GET',
             url: '/',
+        });
+    }
+
+    /**
+     * Get Status
+     * @returns Status Successful Response
+     * @throws ApiError
+     */
+    public getStatusRankRateGet(): CancelablePromise<Status> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/rank_rate',
         });
     }
 

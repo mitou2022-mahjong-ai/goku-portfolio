@@ -22,3 +22,9 @@ class Stats(BaseModel):
     ave_agari: float
     ave_houju: float
     ryuukyoku_tenpai_percentage: float
+
+
+class Status(BaseModel):
+    dan: int
+    dan_point: int
+    rate: int
