@@ -292,6 +292,10 @@ const Page: NextPage = () => {
     return retval;
   }, [stats, start, end, timeChecked, aiCheckCnt]);
 
+  const totalGameCount = useMemo(() => {
+    return chosenStats?.length || 0;
+  }, [stats, start, end, timeChecked, aiCheckCnt]);
+
   const rankCounter = useMemo(() => {
     const retval = [0, 0, 0, 0];
     chosenStats?.forEach((s) => {
@@ -572,23 +576,43 @@ const Page: NextPage = () => {
         {chosenStats ? (
           <VStack>
             <Box w="50%">
-              <Pie
-                data={{
-                  labels: ["1位", "2位", "3位", "4位"],
-                  datasets: [
-                    {
-                      backgroundColor: [
-                        "rgba(255, 99, 132, 0.2)",
-                        "rgba(54, 162, 235, 0.2)",
-                        "rgba(255, 206, 86, 0.2)",
-                        "rgba(75, 192, 192, 0.2)",
-                      ],
-                      data: rankCounter,
-                      borderWidth: 1,
+              {chosenStats.length > 0 ? (
+                <Pie
+                  data={{
+                    labels: ["1位", "2位", "3位", "4位"],
+                    datasets: [
+                      {
+                        backgroundColor: [
+                          "rgba(255, 99, 132, 0.2)",
+                          "rgba(54, 162, 235, 0.2)",
+                          "rgba(255, 206, 86, 0.2)",
+                          "rgba(75, 192, 192, 0.2)",
+                        ],
+                        data: rankCounter,
+                        borderWidth: 1,
+                      },
+                    ],
+                  }}
+                  options={{
+                    plugins: {
+                      tooltip: {
+                        callbacks: {
+                          label: (ctx) => {
+                            return `${ctx.label}: ${
+                              ctx.formattedValue
+                            }戦 (${Math.round(
+                              (parseInt(ctx.formattedValue) * 100) /
+                                totalGameCount
+                            )}%)`;
+                          },
+                        },
+                      },
                     },
-                  ],
-                }}
-              />
+                  }}
+                />
+              ) : (
+                <></>
+              )}
             </Box>
             <DataTable stats={chosenStats} />
           </VStack>
