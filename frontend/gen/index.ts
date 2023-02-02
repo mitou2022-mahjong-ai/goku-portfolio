@@ -10,5 +10,6 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { Stats } from './models/Stats';
+export type { Status } from './models/Status';
 
 export { DefaultService } from './services/DefaultService';
